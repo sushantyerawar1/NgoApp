@@ -1,0 +1,30 @@
+.usernameinput{
+    margin-top: -20px;
+    margin-bottom: 10px;
+    width: 220px;
+    height: 30px;
+    border-radius: 5px;
+    padding: 10px;
+    border: 0;
+    box-shadow: 1px 0px 6px 1px;
+}
+
+.emailinput  {
+  width: 220px;
+  height: 30px;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 0;
+  box-shadow: 1px 0px 6px 1px;
+}
+
+.passinput {
+    width: 220px;
+    height: 30px;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 0;
+    box-shadow: 1px 0px 6px 1px;
+  }
