@@ -131,8 +131,6 @@ function Awards({ setview }) {
         getData();
     }, []);
 
-
-    console.log(Data, 'DataDataDataDataData')
     return (
         <>
             <Header />

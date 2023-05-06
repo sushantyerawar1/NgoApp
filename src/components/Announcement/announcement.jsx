@@ -51,42 +51,16 @@ function Announcement({ setview }) {
         setEditData({ ...EditData, [name]: value });
     };
 
-    const handleEdit = (user) => {
+    const handleEdit = (announcement) => {
         setEditOpen(true);
-        setEditData(user);
+        setEditData(announcement);
     };
     const confirmEdit = (data) => {
-        const {
-            EnquiryId,
-            Name,
-            Email,
-            Mobile,
-            Country,
-            City,
-            InterestedIn,
-            PurchaseFor,
-            Date,
-            EnquiryCreatedBy,
-            EnquiryStatus
-        } = data;
-        const finaldata = {
-            EnquiryId,
-            Name,
-            Email,
-            Mobile,
-            Country,
-            City,
-            InterestedIn,
-            PurchaseFor,
-            Date,
-            EnquiryCreatedBy,
-            EnquiryStatus
-        };
-
+        console.log(data, 'datattatatatta')
         axios
             .post(
-                "https://avinyasale.azurewebsites.net/api/v1/updateEnquiryDetails",
-                finaldata
+                "https://ngoapp01.azurewebsites.net/api/v1/updateAnnounceMentDetails",
+                data
             )
             .then((res) => {
                 alert(res.data.message);
@@ -111,7 +85,7 @@ function Announcement({ setview }) {
     const confirmDelete = async (id) => {
         await axios
             .delete(
-                `https://avinyasale.azurewebsites.net/api/v1/deleteEnquiryDetails/${id}`
+                `https://ngoapp01.azurewebsites.net/api/v1/deleteAnnounceMentDetails/${id}`
             )
             .then(() => {
                 handleClose();
@@ -120,7 +94,7 @@ function Announcement({ setview }) {
     };
     const getData = async () => {
         await axios
-            .get("https://avinyasale.azurewebsites.net/api/v1/viewEnquiryDetails")
+            .get("https://ngoapp01.azurewebsites.net/api/v1/viewAnnounceMentDetails")
             .then((res) => {
                 const { data } = res.data;
                 setData(data);
@@ -292,28 +266,28 @@ function Announcement({ setview }) {
                             </TableRow>
                         </TableHead>
 
-                        {Data.map((user) => {
+                        {Data.map((announcement) => {
                             return (
-                                <TableBody key={user._id}>
+                                <TableBody key={announcement._id}>
                                     <TableRow>
                                         <TableCell align="center" sx={{ width: "150px" }}>
-                                            {user.EnquiryId}
+                                            {announcement.DateCreated}
                                         </TableCell>
-                                        <TableCell align="center">{user.Name}</TableCell>
-                                        <TableCell align="center">{user.Email}</TableCell>
+                                        <TableCell align="center">{announcement.Title}</TableCell>
+                                        <TableCell align="center">{announcement.CreatedBy}</TableCell>
                                         <TableCell align="center">
-                                            <VisibilityIcon className="ViewIcon" onClick={() => handleView(user)} />
+                                            <VisibilityIcon className="ViewIcon" onClick={() => handleView(announcement)} />
                                         </TableCell>
                                         <TableCell align="center">
                                             <EditIcon
                                                 className="EditIcon"
-                                                onClick={() => handleEdit(user)}
+                                                onClick={() => handleEdit(announcement)}
                                             />
                                         </TableCell>
                                         <TableCell align="center">
                                             <DeleteIcon
                                                 className="DeleteIcon"
-                                                onClick={() => handleDelete(user.EnquiryId)}
+                                                onClick={() => handleDelete(announcement.AnnounceMentId)}
                                             />
                                         </TableCell>
                                     </TableRow>
@@ -334,21 +308,31 @@ function Announcement({ setview }) {
                     </DialogTitle>
 
                     <DialogContent>
-                        <DialogContentText>Award Name:</DialogContentText>
+                        <DialogContentText>Title:</DialogContentText>
 
                         <TextField
-                            name="Name"
-                            value={EditData.Name}
+                            name="Title"
+                            value={EditData.Title}
                             onChange={(e) => handleChange(e)}
                             type="text"
                             sx={{ mb: 2 }}
                         />
 
-                        <DialogContentText>Award Description:</DialogContentText>
+                        <DialogContentText>Created by:</DialogContentText>
 
                         <TextField
-                            name="Name"
-                            value={EditData.Name}
+                            name="CreatedBy"
+                            value={EditData.CreatedBy}
+                            onChange={(e) => handleChange(e)}
+                            type="text"
+                            sx={{ mb: 2 }}
+                        />
+
+                        <DialogContentText>Content :</DialogContentText>
+
+                        <TextField
+                            name="Content"
+                            value={EditData.Content}
                             onChange={(e) => handleChange(e)}
                             type="text"
                             sx={{ mb: 2 }}

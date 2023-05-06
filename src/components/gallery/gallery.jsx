@@ -1,32 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-    Box,
-    Toolbar,
-    Typography,
-    TextField,
-    InputAdornment,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
-} from "@mui/material";
+import { Box, Toolbar, Typography, TextField, InputAdornment, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, } from "@mui/material";
 import Button from "@mui/material/Button";
-import Add from "@mui/icons-material/Add";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
-//icons
 import SearchIcon from "@mui/icons-material/Search";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
 import axios from "axios";
 import Header from "../header/header";
 import { useNavigate } from "react-router-dom";
@@ -74,7 +57,6 @@ export default function Gallery({ setview }) {
             });
     };
 
-    // ---Delete Code---
     const [open, setOpen] = React.useState(false);
     const [deleteitem, setdeleteitem] = React.useState("");
 
@@ -85,10 +67,11 @@ export default function Gallery({ setview }) {
     const getData = async () => {
         await axios
             .get(
-                "https://avinyasale.azurewebsites.net/api/v1/viewBlogDetails"
+                "https://ngoapp01.azurewebsites.net/api/v1/getAllgalarys"
             )
             .then((res) => {
                 const { data } = res.data;
+                console.log(data, 'dtata')
                 setData(data);
             });
     };
@@ -104,7 +87,7 @@ export default function Gallery({ setview }) {
     const confirmDelete = async (id) => {
         await axios
             .delete(
-                `https://avinyasale.azurewebsites.net/api/v1/deleteBlogDetails/${id}`
+                `https://ngoapp01.azurewebsites.net/api/v1/Deletegalary/${id}`
             )
             .then(() => {
                 handleClose();
@@ -273,28 +256,28 @@ export default function Gallery({ setview }) {
                             </TableRow>
                         </TableHead>
 
-                        {Data.map((user) => {
+                        {Data.map((gallery) => {
                             return (
-                                <TableBody key={user._id}>
+                                <TableBody key={gallery._id}>
                                     <TableRow>
                                         <TableCell align="center" sx={{ width: "150px" }}>
-                                            {user.BlogId}
+                                            {gallery.createdAt}
                                         </TableCell>
-                                        <TableCell align="center">{user.DateCreated}</TableCell>
-                                        <TableCell align="center">{user.Title}</TableCell>
+                                        <TableCell align="center">{gallery.Name}</TableCell>
+                                        <TableCell align="center">{gallery.galaryPic}</TableCell>
                                         <TableCell align="center">
-                                            <VisibilityIcon className="ViewIcon" onClick={() => handleView(user)} />
+                                            <VisibilityIcon className="ViewIcon" onClick={() => handleView(gallery)} />
                                         </TableCell>
                                         <TableCell align="center">
                                             <EditIcon
                                                 className="EditIcon"
-                                                onClick={() => handleEdit(user)}
+                                                onClick={() => handleEdit(gallery)}
                                             />
                                         </TableCell>
                                         <TableCell align="center">
                                             <DeleteIcon
                                                 className="DeleteIcon"
-                                                onClick={() => handleDelete(user.BlogId)}
+                                                onClick={() => handleDelete(gallery.galaryId)}
                                             />
                                         </TableCell>
                                     </TableRow>
@@ -313,19 +296,11 @@ export default function Gallery({ setview }) {
                     <DialogTitle id="alert-dialog-title">Update List Enqiure</DialogTitle>
 
                     <DialogContent>
-                        <DialogContentText>DateCreated:</DialogContentText>
-                        <TextField
-                            name="DateCreated"
-                            value={EditData.DateCreated}
-                            onChange={(e) => handleChange(e)}
-                            type="text"
-                            sx={{ mb: 2 }}
-                        />
 
-                        <DialogContentText>Title:</DialogContentText>
+                        <DialogContentText>Name:</DialogContentText>
                         <TextField
-                            name="Title"
-                            value={EditData.Title}
+                            name="Name"
+                            value={EditData.Name}
                             onChange={(e) => handleChange(e)}
                             type="text"
                             sx={{ mb: 2 }}

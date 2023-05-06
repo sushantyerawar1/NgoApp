@@ -20,11 +20,12 @@ const Login = ({ setUser }) => {
     };
 
 
+    console.log(Login, 'data')
 
     const handleclick = () => {
         axios.post('https://ngoapp01.azurewebsites.net/api/v1/Adminlogin', Login)
             .then((res) => {
-                console.log(res)
+                console.log(res, 'res')
                 if (res.data.success) {
                     alert(res.data.message);
                     const { data } = res.data;

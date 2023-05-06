@@ -111,7 +111,7 @@ function G80_A12_Certificate({ setview }) {
     const confirmDelete = async (id) => {
         await axios
             .delete(
-                `https://avinyasale.azurewebsites.net/api/v1/deleteEnquiryDetails/${id}`
+                `https://ngoapp01.azurewebsites.net/api/v1/Deletecertificate80G12A/${id}`
             )
             .then(() => {
                 handleClose();
@@ -120,7 +120,7 @@ function G80_A12_Certificate({ setview }) {
     };
     const getData = async () => {
         await axios
-            .get("https://avinyasale.azurewebsites.net/api/v1/viewEnquiryDetails")
+            .get("https://ngoapp01.azurewebsites.net/api/v1/getAllcertificate80G12As")
             .then((res) => {
                 const { data } = res.data;
                 setData(data);
@@ -292,28 +292,28 @@ function G80_A12_Certificate({ setview }) {
                             </TableRow>
                         </TableHead>
 
-                        {Data.map((user) => {
+                        {Data.map((certificate) => {
                             return (
-                                <TableBody key={user._id}>
+                                <TableBody key={certificate._id}>
                                     <TableRow>
                                         <TableCell align="center" sx={{ width: "150px" }}>
-                                            {user.EnquiryId}
+                                            {certificate.createdAt}
                                         </TableCell>
-                                        <TableCell align="center">{user.Name}</TableCell>
-                                        <TableCell align="center">{user.Email}</TableCell>
+                                        <TableCell align="center">{certificate.certificate80G12AName}</TableCell>
+                                        <TableCell align="center">{certificate.certificate80G12APic}</TableCell>
                                         <TableCell align="center">
-                                            <VisibilityIcon className="ViewIcon" onClick={() => handleView(user)} />
+                                            <VisibilityIcon className="ViewIcon" onClick={() => handleView(certificate)} />
                                         </TableCell>
                                         <TableCell align="center">
                                             <EditIcon
                                                 className="EditIcon"
-                                                onClick={() => handleEdit(user)}
+                                                onClick={() => handleEdit(certificate)}
                                             />
                                         </TableCell>
                                         <TableCell align="center">
                                             <DeleteIcon
                                                 className="DeleteIcon"
-                                                onClick={() => handleDelete(user.EnquiryId)}
+                                                onClick={() => handleDelete(certificate.certificate80G12AId)}
                                             />
                                         </TableCell>
                                     </TableRow>
@@ -334,21 +334,21 @@ function G80_A12_Certificate({ setview }) {
                     </DialogTitle>
 
                     <DialogContent>
-                        <DialogContentText>Award Name:</DialogContentText>
+                        <DialogContentText>Certificate Name:</DialogContentText>
 
                         <TextField
                             name="Name"
-                            value={EditData.Name}
+                            value={EditData.certificate80G12AName}
                             onChange={(e) => handleChange(e)}
                             type="text"
                             sx={{ mb: 2 }}
                         />
 
-                        <DialogContentText>Award Description:</DialogContentText>
+                        <DialogContentText>Certificate Description:</DialogContentText>
 
                         <TextField
-                            name="Name"
-                            value={EditData.Name}
+                            name="certificate80G12AName"
+                            value={EditData.certificate80G12ADescription}
                             onChange={(e) => handleChange(e)}
                             type="text"
                             sx={{ mb: 2 }}

@@ -1,67 +1,58 @@
 import { Box, Button, FormControl, TextField, Toolbar, Typography, Select } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CheckIcon from "@mui/icons-material/Check";
 import axios from "axios";
 import Header from "../header/header";
-import imageCompression from 'browser-image-compression';
 import { useNavigate } from "react-router-dom";
 
-export default function Createcertificate(params) {
-
+export default function CreateGallery(params) {
 
     const navigate = useNavigate();
+    const [content, setcontent] = useState('');
     const [data, setdata] = useState({
         galaryId: "autogeneted",
         Name: "",
         galaryPic: ""
     });
 
+
+
+
+    useEffect(() => {
+        setdata({ ...data, ['galaryPic']: content });
+    }, [content]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setdata({ ...data, [name]: value });
     };
 
-    console.log(data, 'data')
 
-    const convertBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
+    const fun = (e) => {
+        console.log(e, 'eeeeeeeeeeeeeeeee')
+    };
 
-            fileReader.onload = () => {
-                resolve(fileReader.result);
-            }
 
-            fileReader.onerror = (error) => {
-                reject(error);
-            }
-        })
-    }
+    let objectDate = new Date();
 
-    const uploadImage = async (e) => {
 
-        const { name, files } = e.target;
-        const file = e.target.files[0];
-        // console.log(file, 'filessssssss')
-        const options = {
-            maxSizeMB: 0.5,
-            maxWidthOrHeight: 960,
-            useWebWorker: true
-        }
-        const compressedFile = await imageCompression(file, options);
-        const convertedFile = await convertBase64(compressedFile);
-        console.log(typeof (convertedFile), 'converted')
-        // setdata({ ...data, [name]: convertedFile });
-    }
+    let day = objectDate.getDate();
+    let month = (objectDate.getMonth() + 1);
+    let year = objectDate.getFullYear();
+
+    console.log("->", data);
 
 
     const handleClickfun = async () => {
-        console.log("->", data);
         await axios
-            .post("https://ngoapp01.azurewebsites.net/api/v1/createAwardsProfile", data)
+            .post("https://ngoapp01.azurewebsites.net/api/v1/creategalaryProfile", {
+                galaryId: "autogeneted",
+                Name: data.Name,
+                Date: day + '-' + month + '-' + year,
+                galaryPic: data.galaryPic
+            })
             .then((res) => {
-                console.log(res, 'finalupload');
                 const { message } = res.data;
                 alert(message);
                 setdata({
@@ -69,6 +60,7 @@ export default function Createcertificate(params) {
                     Name: "",
                     galaryPic: ""
                 })
+                setcontent('')
             });
     };
 
@@ -153,17 +145,17 @@ export default function Createcertificate(params) {
                             sx={{ width: "75%" }}
                             placeholder="Announcement For "
                             name="galaryPic"
-                            value={data.galaryPic}
-                            onChange={(e) => uploadImage(e)}
+                            onChange={(e) =>
+                                setcontent(
+                                    'https://avinya01.s3.ap-south-1.amazonaws.com/' +
+                                    e.target.files[0].name
+                                )
+                            }
                         ></TextField>
                     </FormControl>
 
-
-
                     <br />
                     <br />
-
-
 
                     <FormControl
                         sx={{

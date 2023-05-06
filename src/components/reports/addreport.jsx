@@ -22,7 +22,6 @@ export default function CreateReports(params) {
         setdata({ ...data, [name]: value });
     };
 
-    console.log(data, 'data')
 
     const convertBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -81,7 +80,7 @@ export default function CreateReports(params) {
                     variant="h4"
                     sx={{ fontSize: "30px", color: "#E56757", textAlign: "center" }}
                 >
-                    Award
+                    Report
                 </Typography>
 
                 <Box
@@ -108,7 +107,7 @@ export default function CreateReports(params) {
                             textAlign: 'center'
                         }}
                     >
-                        Add Award
+                        Add Report
                     </Typography>
                     <Typography
                         sx={{ width: "100%", border: "1px solid #F0F0F0" }}
@@ -178,7 +177,7 @@ export default function CreateReports(params) {
                             variant="outlined"
                             sx={{ bgcolor: "#fff", marginRight: "10px", color: "#000" }}
                             startIcon={<ArrowBackIcon />}
-                            onClick={() => navigate("/awards")}
+                            onClick={() => navigate("/reports")}
                         >
                             Back
                         </Button>

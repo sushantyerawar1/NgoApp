@@ -45,7 +45,6 @@ export default function Createcertificate(params) {
 
         const { name, files } = e.target;
         const file = e.target.files[0];
-        // console.log(file, 'filessssssss')
         const options = {
             maxSizeMB: 0.5,
             maxWidthOrHeight: 960,
@@ -54,7 +53,6 @@ export default function Createcertificate(params) {
         const compressedFile = await imageCompression(file, options);
         const convertedFile = await convertBase64(compressedFile);
         console.log(typeof (convertedFile), 'converted')
-        // setdata({ ...data, [name]: convertedFile });
     }
 
 
@@ -160,9 +158,6 @@ export default function Createcertificate(params) {
                         ></TextField>
                     </FormControl>
 
-
-
-
                     <FormControl
                         sx={{
                             paddingLeft: "40px",
@@ -185,13 +180,8 @@ export default function Createcertificate(params) {
                             onChange={(e) => uploadImage(e)}
                         ></TextField>
                     </FormControl>
-
-
-
                     <br />
                     <br />
-
-
 
                     <FormControl
                         sx={{
