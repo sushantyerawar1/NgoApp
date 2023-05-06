@@ -42,7 +42,6 @@ const Login = ({ setUser }) => {
             })
     };
 
-    console.log(Login.Name, Login.Email, Login.Password)
 
     return (
         <div className="container">

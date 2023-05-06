@@ -75,7 +75,7 @@ export default function Sidebar() {
                         </ListItem>
 
                         <ListItem disablePadding>
-                            <ListItemButton >
+                            <ListItemButton onClick={() => navigate('/gallery')}>
                                 <ListItemIcon>
                                     <ContactPageIcon sx={{ color: "#6945FF" }} />
                                 </ListItemIcon>
@@ -87,7 +87,7 @@ export default function Sidebar() {
                         </ListItem>
 
                         <ListItem disablePadding>
-                            <ListItemButton >
+                            <ListItemButton onClick={() => navigate('/trustees')}>
                                 <ListItemIcon>
                                     <AccountCircleIcon sx={{ color: "#6945FF" }} />
                                 </ListItemIcon>
@@ -112,7 +112,7 @@ export default function Sidebar() {
 
 
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton onClick={() => navigate('/announcement')}>
                                 <ListItemIcon>
                                     <AttachMoneyIcon sx={{ color: "#6945FF" }} />
                                 </ListItemIcon>
@@ -124,7 +124,7 @@ export default function Sidebar() {
                         </ListItem>
 
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton onClick={() => navigate('/awards')}>
                                 <ListItemIcon>
                                     <StarIcon sx={{ color: "#6945FF" }} />
                                 </ListItemIcon>
@@ -135,7 +135,7 @@ export default function Sidebar() {
                         </ListItem>
 
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton onClick={() => navigate('/reports')}>
                                 <ListItemIcon>
                                     <AssignmentLateIcon sx={{ color: "#6945FF" }} />
                                 </ListItemIcon>
@@ -146,7 +146,7 @@ export default function Sidebar() {
                         </ListItem>
 
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton onClick={() => navigate('/g80_a12_certificate')} >
                                 <ListItemIcon>
                                     <DescriptionIcon sx={{ color: "#6945FF" }} />
                                 </ListItemIcon>
