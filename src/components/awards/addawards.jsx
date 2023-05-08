@@ -21,6 +21,7 @@ export default function AddAwards(params) {
         setdata({ ...data, [name]: value });
     };
 
+    console.log(data, 'dattatatat')
     const handleClickfun = async () => {
         await axios
             .post(
@@ -34,13 +35,18 @@ export default function AddAwards(params) {
                     AwardsId: 'autogeneted',
                     AwardsName: '',
                     AwardsDescription: '',
+                    AwardsPic: ''
                 });
+                setcontent('')
             });
     };
 
     useEffect(() => {
         setdata({ ...data, ['AwardsPic']: content });
     }, [content]);
+
+
+    console.log(content, 'content')
 
 
     return (
@@ -141,14 +147,14 @@ export default function AddAwards(params) {
                             Upload Awards Certificate
                         </Typography>
                         <TextField
-                            type='file'
-                            sx={{ width: '75%' }}
-                            placeholder='Announcement For '
-                            name='AwardsPic'
+                            type="file"
+                            sx={{ width: "75%" }}
+                            placeholder="Announcement For "
+                            name="AwardsPic"
                             onChange={(e) =>
                                 setcontent(
                                     'https://avinya01.s3.ap-south-1.amazonaws.com/' +
-                                    e.target.value.split('\\')[2]
+                                    e.target.files[0].name
                                 )
                             }
                         ></TextField>

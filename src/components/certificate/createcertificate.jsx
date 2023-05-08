@@ -1,5 +1,5 @@
 import { Box, Button, FormControl, TextField, Toolbar, Typography, Select } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CheckIcon from "@mui/icons-material/Check";
 import axios from "axios";
@@ -11,6 +11,7 @@ export default function Createcertificate(params) {
 
 
     const navigate = useNavigate();
+    const [content, setcontent] = useState('');
     const [data, setdata] = useState({
         AwardsId: "autogeneted",
         AwardsName: "",
@@ -24,36 +25,9 @@ export default function Createcertificate(params) {
         setdata({ ...data, [name]: value });
     };
 
-    console.log(data, 'data')
-
-    const convertBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
-
-            fileReader.onload = () => {
-                resolve(fileReader.result);
-            }
-
-            fileReader.onerror = (error) => {
-                reject(error);
-            }
-        })
-    }
-
-    const uploadImage = async (e) => {
-
-        const { name, files } = e.target;
-        const file = e.target.files[0];
-        const options = {
-            maxSizeMB: 0.5,
-            maxWidthOrHeight: 960,
-            useWebWorker: true
-        }
-        const compressedFile = await imageCompression(file, options);
-        const convertedFile = await convertBase64(compressedFile);
-        console.log(typeof (convertedFile), 'converted')
-    }
+    useEffect(() => {
+        setdata({ ...data, ['AwardsPic']: content });
+    }, [content]);
 
 
     const handleClickfun = async () => {
@@ -176,8 +150,12 @@ export default function Createcertificate(params) {
                             sx={{ width: "75%" }}
                             placeholder="Announcement For "
                             name="AwardsPic"
-                            value={data.AwardsPic}
-                            onChange={(e) => uploadImage(e)}
+                            onChange={(e) =>
+                                setcontent(
+                                    'https://avinya01.s3.ap-south-1.amazonaws.com/' +
+                                    e.target.files[0].name
+                                )
+                            }
                         ></TextField>
                     </FormControl>
                     <br />

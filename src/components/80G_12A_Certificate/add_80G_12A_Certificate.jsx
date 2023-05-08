@@ -1,5 +1,5 @@
 import { Box, Button, FormControl, TextField, Toolbar, Typography, Select } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CheckIcon from "@mui/icons-material/Check";
 import axios from "axios";
@@ -11,67 +11,42 @@ export default function ADD_G80_A12_Certificate(params) {
 
 
     const navigate = useNavigate();
+    const [content, setcontent] = useState('');
     const [data, setdata] = useState({
-        AwardsId: "autogeneted",
-        AwardsName: "",
-        AwardsDescription: "",
-        AwardsPic: ""
+        "certificate80G12AId": "autogeneted",
+        "certificate80G12AName": "",
+        "certificate80G12ADescription": "",
+        "certificate80G12APic": ""
 
     });
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setdata({ ...data, [name]: value });
     };
 
-    console.log(data, 'data')
 
-    const convertBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
-
-            fileReader.onload = () => {
-                resolve(fileReader.result);
-            }
-
-            fileReader.onerror = (error) => {
-                reject(error);
-            }
-        })
-    }
-
-    const uploadImage = async (e) => {
-
-        const { name, files } = e.target;
-        const file = e.target.files[0];
-        // console.log(file, 'filessssssss')
-        const options = {
-            maxSizeMB: 0.5,
-            maxWidthOrHeight: 960,
-            useWebWorker: true
-        }
-        const compressedFile = await imageCompression(file, options);
-        const convertedFile = await convertBase64(compressedFile);
-        console.log(typeof (convertedFile), 'converted')
-        // setdata({ ...data, [name]: convertedFile });
-    }
+    useEffect(() => {
+        setdata({ ...data, ['certificate80G12APic']: content });
+    }, [content]);
 
 
     const handleClickfun = async () => {
         console.log("->", data);
         await axios
-            .post("https://ngoapp01.azurewebsites.net/api/v1/createAwardsProfile", data)
+            .post("https://ngoapp01.azurewebsites.net/api/v1/createcertificate80G12AProfile", data)
             .then((res) => {
                 console.log(res, 'finalupload');
                 const { message } = res.data;
                 alert(message);
                 setdata({
-                    AwardsId: "autogeneted",
-                    AwardsName: "",
-                    AwardsDescription: "",
-                    AwardsPic: ""
+                    "certificate80G12AId": "autogeneted",
+                    "certificate80G12AName": "",
+                    "certificate80G12ADescription": "",
+                    "certificate80G12APic": ""
                 })
+                setcontent('')
             });
     };
 
@@ -132,8 +107,8 @@ export default function ADD_G80_A12_Certificate(params) {
                         <TextField
                             sx={{ width: "75%" }}
                             placeholder="Enter 80G/12A Certificate Name"
-                            name="AwardsName"
-                            value={data.AwardsName}
+                            name="certificate80G12AName"
+                            value={data.certificate80G12AName}
                             onChange={(e) => handleChange(e)}
                         ></TextField>
                     </FormControl>
@@ -154,13 +129,11 @@ export default function ADD_G80_A12_Certificate(params) {
                         <TextField
                             sx={{ width: "75%" }}
                             placeholder="Enter 80G/12A Certificate Description"
-                            name="AwardsDescription"
-                            value={data.AwardsDescription}
+                            name="certificate80G12ADescription"
+                            value={data.certificate80G12ADescription}
                             onChange={(e) => handleChange(e)}
                         ></TextField>
                     </FormControl>
-
-
 
 
                     <FormControl
@@ -180,9 +153,13 @@ export default function ADD_G80_A12_Certificate(params) {
                             type="file"
                             sx={{ width: "75%" }}
                             placeholder="Announcement For "
-                            name="AwardsPic"
-                            value={data.AwardsPic}
-                            onChange={(e) => uploadImage(e)}
+                            name="certificate80G12APic"
+                            onChange={(e) =>
+                                setcontent(
+                                    'https://avinya01.s3.ap-south-1.amazonaws.com/' +
+                                    e.target.files[0].name
+                                )
+                            }
                         ></TextField>
                     </FormControl>
 

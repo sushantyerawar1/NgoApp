@@ -28,20 +28,11 @@ export default function CreateGallery(params) {
         setdata({ ...data, [name]: value });
     };
 
-
-    const fun = (e) => {
-        console.log(e, 'eeeeeeeeeeeeeeeee')
-    };
-
-
     let objectDate = new Date();
-
 
     let day = objectDate.getDate();
     let month = (objectDate.getMonth() + 1);
     let year = objectDate.getFullYear();
-
-    console.log("->", data);
 
 
     const handleClickfun = async () => {

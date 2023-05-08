@@ -1,73 +1,50 @@
 import { Box, Button, FormControl, TextField, Toolbar, Typography, Select } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CheckIcon from "@mui/icons-material/Check";
 import axios from "axios";
 import Header from "../header/header";
-import imageCompression from 'browser-image-compression';
 import { useNavigate } from "react-router-dom";
 
 export default function CreateReports(params) {
 
 
     const navigate = useNavigate();
+    const [content, setcontent] = useState('');
     const [data, setdata] = useState({
-        galaryId: "autogeneted",
-        Name: "",
-        galaryPic: ""
+        ReportId: "autogeneted",
+        ReportName: "",
+        ReportDescription: "Beautiful templates for the world's most popular content management system. Discover thousands of easy to customize themes, templates & CMS products.",
+        Report: ""
     });
+
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setdata({ ...data, [name]: value });
     };
 
-
-    const convertBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
-
-            fileReader.onload = () => {
-                resolve(fileReader.result);
-            }
-
-            fileReader.onerror = (error) => {
-                reject(error);
-            }
-        })
-    }
-
-    const uploadImage = async (e) => {
-
-        const { name, files } = e.target;
-        const file = e.target.files[0];
-        // console.log(file, 'filessssssss')
-        const options = {
-            maxSizeMB: 0.5,
-            maxWidthOrHeight: 960,
-            useWebWorker: true
-        }
-        const compressedFile = await imageCompression(file, options);
-        const convertedFile = await convertBase64(compressedFile);
-        console.log(typeof (convertedFile), 'converted')
-        // setdata({ ...data, [name]: convertedFile });
-    }
+    useEffect(() => {
+        setdata({ ...data, ['Report']: content });
+    }, [content]);
 
 
     const handleClickfun = async () => {
         console.log("->", data);
         await axios
-            .post("https://ngoapp01.azurewebsites.net/api/v1/createAwardsProfile", data)
+            .post("https://ngoapp01.azurewebsites.net/api/v1/createReportProfile", data)
             .then((res) => {
                 console.log(res, 'finalupload');
                 const { message } = res.data;
                 alert(message);
                 setdata({
-                    galaryId: "autogeneted",
-                    Name: "",
-                    galaryPic: ""
+                    ReportId: "autogeneted",
+                    ReportName: "",
+                    ReportDescription: "Beautiful templates for the world's most popular content management system. Discover thousands of easy to customize themes, templates & CMS products.",
+                    Report: ""
                 })
+                setcontent('')
             });
     };
 
@@ -128,7 +105,7 @@ export default function CreateReports(params) {
                         <TextField
                             sx={{ width: "75%" }}
                             placeholder="Enter Report Name"
-                            name="Name"
+                            name="ReportName"
                             value={data.Name}
                             onChange={(e) => handleChange(e)}
                         ></TextField>
@@ -151,9 +128,13 @@ export default function CreateReports(params) {
                             type="file"
                             sx={{ width: "75%" }}
                             placeholder="Announcement For "
-                            name="galaryPic"
-                            value={data.galaryPic}
-                            onChange={(e) => uploadImage(e)}
+                            name="Report"
+                            onChange={(e) =>
+                                setcontent(
+                                    'https://avinya01.s3.ap-south-1.amazonaws.com/' +
+                                    e.target.files[0].name
+                                )
+                            }
                         ></TextField>
                     </FormControl>
 
