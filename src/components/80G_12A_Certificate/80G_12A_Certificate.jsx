@@ -123,6 +123,7 @@ function G80_A12_Certificate({ setview }) {
             .get("https://ngoapp01.azurewebsites.net/api/v1/getAllcertificate80G12As")
             .then((res) => {
                 const { data } = res.data;
+                console.log(data, 'data')
                 setData(data);
             });
     };
@@ -297,10 +298,10 @@ function G80_A12_Certificate({ setview }) {
                                 <TableBody key={certificate._id}>
                                     <TableRow>
                                         <TableCell align="center" sx={{ width: "150px" }}>
-                                            {certificate.createdAt}
+                                            {certificate.createdAt.split('T')[0]}
                                         </TableCell>
                                         <TableCell align="center">{certificate.certificate80G12AName}</TableCell>
-                                        <TableCell align="center">{certificate.certificate80G12APic}</TableCell>
+                                        <TableCell align="center">{certificate.certificate80G12APic.split('/')[3]}</TableCell>
                                         <TableCell align="center">
                                             <VisibilityIcon className="ViewIcon" onClick={() => handleView(certificate)} />
                                         </TableCell>

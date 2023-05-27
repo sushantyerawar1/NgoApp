@@ -30,6 +30,7 @@ function App() {
             <Box sx={{ display: "flex" }}>
                 <BrowserRouter>
                     <Routes>
+
                         <Route exact path="/" element={<Login setUser={setUser} />} />
                         <Route path="/home" element={<Home />} />
                         <Route path="/certificate" element={<Certificate />} />

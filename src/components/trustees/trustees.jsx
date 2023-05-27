@@ -116,7 +116,7 @@ function Trustees({ setview }) {
     const confirmDelete = async (id) => {
         await axios
             .delete(
-                `https://avinyasale.azurewebsites.net/api/v1/deleteEnquiryDetails/${id}`
+                `https://ngoapp01.azurewebsites.net/api/v1/DeleteTrustees/${id}`
             )
             .then(() => {
                 handleClose();
@@ -125,7 +125,7 @@ function Trustees({ setview }) {
     };
     const getData = async () => {
         await axios
-            .get("https://avinyasale.azurewebsites.net/api/v1/viewEnquiryDetails")
+            .get("https://ngoapp01.azurewebsites.net/api/v1/getAllTrusteess")
             .then((res) => {
                 const { data } = res.data;
                 setData(data);
@@ -134,6 +134,8 @@ function Trustees({ setview }) {
     useEffect(() => {
         getData();
     }, []);
+
+    console.log(Data)
     return (
         <>
             <Header />
@@ -308,29 +310,29 @@ function Trustees({ setview }) {
                             </TableRow>
                         </TableHead>
 
-                        {Data.map((user) => {
+                        {Data.map((trustee) => {
                             return (
-                                <TableBody key={user._id}>
+                                <TableBody key={trustee._id}>
                                     <TableRow>
                                         <TableCell align="center" sx={{ width: "150px" }}>
-                                            {user.EnquiryId}
+                                            {trustee.createdAt.split('T')[0]}
                                         </TableCell>
-                                        <TableCell align="center">{user.Name}</TableCell>
-                                        <TableCell align="center">{user.Email}</TableCell>
-                                        <TableCell align="center">{user.Mobile}</TableCell>
+                                        <TableCell align="center">{trustee.Name}</TableCell>
+                                        <TableCell align="center">Trustees</TableCell>
+                                        <TableCell align="center">{trustee.TrusteesPic.split('/')[3]}</TableCell>
                                         <TableCell align="center">
-                                            <VisibilityIcon className="ViewIcon" onClick={() => handleView(user)} />
+                                            <VisibilityIcon className="ViewIcon" onClick={() => handleView(trustee)} />
                                         </TableCell>
                                         <TableCell align="center">
                                             <EditIcon
                                                 className="EditIcon"
-                                                onClick={() => handleEdit(user)}
+                                                onClick={() => handleEdit(trustee)}
                                             />
                                         </TableCell>
                                         <TableCell align="center">
                                             <DeleteIcon
                                                 className="DeleteIcon"
-                                                onClick={() => handleDelete(user.EnquiryId)}
+                                                onClick={() => handleDelete(trustee.TrusteesId)}
                                             />
                                         </TableCell>
                                     </TableRow>

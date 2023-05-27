@@ -311,7 +311,7 @@ function Awards({ setview }) {
                                 <TableBody key={award._id}>
                                     <TableRow>
                                         <TableCell align="center" sx={{ width: "150px" }}>
-                                            {award.createdAt.split('T')[0] + " " + award.createdAt.split('T')[1].split('.')[0]}
+                                            {award.createdAt.split('T')[0]}
                                         </TableCell>
                                         <TableCell align="center">{award.AwardsName}</TableCell>
                                         <TableCell align="center">{award.AwardsDescription}</TableCell>

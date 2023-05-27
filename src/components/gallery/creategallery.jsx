@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CheckIcon from "@mui/icons-material/Check";
 import axios from "axios";
+import imageCompression from 'browser-image-compression';
 import Header from "../header/header";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +18,41 @@ export default function CreateGallery(params) {
     });
 
 
+    const convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            }
+
+            fileReader.onerror = (error) => {
+                reject(error);
+            }
+        })
+    }
+
+    const [imageName, setImageName] = useState("");
+
+
+    const uploadImage = async (e) => {
+        const files = e.target.files;
+
+        const file = e.target.files[0];
+        const fullFileName = file.name;
+
+        const options = {
+            maxSizeMB: 0.5,
+            maxWidthOrHeight: 960,
+            useWebWorker: true
+        }
+        const compressedFile = await imageCompression(file, options);
+
+        const convertedFile = await convertBase64(compressedFile);
+        setcontent(convertedFile)
+        setImageName(fullFileName);
+    }
 
 
     useEffect(() => {
@@ -35,23 +71,32 @@ export default function CreateGallery(params) {
     let year = objectDate.getFullYear();
 
 
+
     const handleClickfun = async () => {
+        // https://ngoapp01.azurewebsites.net/
         await axios
             .post("https://ngoapp01.azurewebsites.net/api/v1/creategalaryProfile", {
-                galaryId: "autogeneted",
+                // galaryId: "autogeneted",
                 Name: data.Name,
                 Date: day + '-' + month + '-' + year,
-                galaryPic: data.galaryPic
+                galaryPicName: imageName,
+                galaryPic: content
             })
             .then((res) => {
-                const { message } = res.data;
-                alert(message);
-                setdata({
-                    galaryId: "autogeneted",
-                    Name: "",
-                    galaryPic: ""
-                })
-                setcontent('')
+
+                if (res.status == 200) {
+                    alert('Gallery Created Successfully')
+                }
+                else {
+                    alert('Gallery Unable to Creat')
+                    setdata({
+                        galaryId: "autogeneted",
+                        Name: "",
+                        galaryPic: ""
+                    })
+                    setcontent('')
+
+                }
             });
     };
 
@@ -136,12 +181,10 @@ export default function CreateGallery(params) {
                             sx={{ width: "75%" }}
                             placeholder="Announcement For "
                             name="galaryPic"
-                            onChange={(e) =>
-                                setcontent(
-                                    'https://avinya01.s3.ap-south-1.amazonaws.com/' +
-                                    e.target.files[0].name
-                                )
-                            }
+                            accept="image/*"
+                            onChange={(e) => {
+                                uploadImage(e);
+                            }}
                         ></TextField>
                     </FormControl>
 

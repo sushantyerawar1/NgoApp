@@ -13,13 +13,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import Header from "../header/header";
 import { useNavigate } from "react-router-dom";
+import imageCompression from 'browser-image-compression';
 
 export default function Gallery({ setview }) {
     const Navigate = useNavigate();
     const [Data, setData] = useState([]);
-    const handleView = (user) => {
-        setview(user);
-        Navigate('/Blogview')
+    const handleView = (gallery) => {
+        setview(gallery);
+        // Navigate('/Blogview')
     }
     //  ---edit Code---
     const [EditOpen, setEditOpen] = React.useState(false);
@@ -36,25 +37,90 @@ export default function Gallery({ setview }) {
         setEditOpen(true);
         setEditData(user);
     };
+
+
+
+    const convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            }
+
+            fileReader.onerror = (error) => {
+                reject(error);
+            }
+        })
+    }
+
+    const [imageName, setImageName] = useState("");
+    const [content, setcontent] = useState('');
+
+
+    const uploadImage = async (e) => {
+        const files = e.target.files;
+
+        const file = e.target.files[0];
+        const fullFileName = file.name;
+
+        const options = {
+            maxSizeMB: 0.5,
+            maxWidthOrHeight: 960,
+            useWebWorker: true
+        }
+        const compressedFile = await imageCompression(file, options);
+
+        const convertedFile = await convertBase64(compressedFile);
+        setcontent(convertedFile)
+
+        setImageName(fullFileName);
+    }
+
+    let objectDate = new Date();
+
+    let day = objectDate.getDate();
+    let month = (objectDate.getMonth() + 1);
+    let year = objectDate.getFullYear();
+
     const confirmEdit = (data) => {
-        const { BlogId, DateCreated, Title, CreatedBy } = data;
+
         const finaldata = {
-            BlogId,
-            DateCreated,
-            Title,
-            CreatedBy,
+            "galaryId": data.galaryId,
+            "Name": data.Name,
+            "Date": day + '-' + month + '-' + year,
+            "galaryPicName": imageName,
+            "galaryPic": content
         };
 
-        axios
-            .post(
-                "https://avinyasale.azurewebsites.net/api/v1/updateBlogDetails",
-                finaldata
-            )
-            .then((res) => {
-                alert(res.data.message);
-                setEditOpen(false);
-                getData();
-            });
+        if (content && data.Name) {
+            axios
+                .post(
+                    "https://ngoapp01.azurewebsites.net/api/v1/UpdategalaryProfile",
+                    finaldata
+                )
+                .then((res) => {
+                    if (res.status == 200) {
+                        alert("Gallery Updated Successfully");
+                    }
+                    else {
+                        alert("Gallery Unable to update");
+                    }
+                    setEditOpen(false);
+                    setcontent('');
+                    setImageName('');
+                    getData();
+                });
+        }
+        else {
+            alert("All Fields are Mandatory");
+            setEditOpen(false);
+            setcontent('');
+            setImageName('');
+            getData();
+        }
+
     };
 
     const [open, setOpen] = React.useState(false);
@@ -71,7 +137,6 @@ export default function Gallery({ setview }) {
             )
             .then((res) => {
                 const { data } = res.data;
-                console.log(data, 'dtata')
                 setData(data);
             });
     };
@@ -94,6 +159,7 @@ export default function Gallery({ setview }) {
                 getData();
             });
     };
+
     return (
         <>
             <Header />
@@ -261,10 +327,10 @@ export default function Gallery({ setview }) {
                                 <TableBody key={gallery._id}>
                                     <TableRow>
                                         <TableCell align="center" sx={{ width: "150px" }}>
-                                            {gallery.createdAt}
+                                            {gallery.createdAt.split('T')[0]}
                                         </TableCell>
                                         <TableCell align="center">{gallery.Name}</TableCell>
-                                        <TableCell align="center">{gallery.galaryPic}</TableCell>
+                                        <TableCell align="center">{gallery.galaryPic.split('/')[3]}</TableCell>
                                         <TableCell align="center">
                                             <VisibilityIcon className="ViewIcon" onClick={() => handleView(gallery)} />
                                         </TableCell>
@@ -306,14 +372,16 @@ export default function Gallery({ setview }) {
                             sx={{ mb: 2 }}
                         />
 
-                        <DialogContentText>CreatedBy:</DialogContentText>
+                        <DialogContentText>Upload Image:</DialogContentText>
                         <TextField
-                            name="CreatedBy"
-                            value={EditData.CreatedBy}
-                            onChange={(e) => handleChange(e)}
-                            type="text"
-                            sx={{ mb: 2 }}
-                        />
+                            type="file"
+                            sx={{ width: "75%" }}
+                            name="galaryPic"
+                            accept="image/*"
+                            onChange={(e) => {
+                                uploadImage(e);
+                            }}
+                        ></TextField>
                     </DialogContent>
 
                     <DialogActions>

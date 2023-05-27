@@ -111,7 +111,7 @@ function Reports({ setview }) {
     const confirmDelete = async (id) => {
         await axios
             .delete(
-                `https://avinyasale.azurewebsites.net/api/v1/deleteEnquiryDetails/${id}`
+                `https://ngoapp01.azurewebsites.net/api/v1/DeleteReport/${id}`
             )
             .then(() => {
                 handleClose();
@@ -120,7 +120,7 @@ function Reports({ setview }) {
     };
     const getData = async () => {
         await axios
-            .get("https://avinyasale.azurewebsites.net/api/v1/viewEnquiryDetails")
+            .get("https://ngoapp01.azurewebsites.net/api/v1/getAllReports")
             .then((res) => {
                 const { data } = res.data;
                 setData(data);
@@ -291,28 +291,28 @@ function Reports({ setview }) {
                             </TableRow>
                         </TableHead>
 
-                        {Data.map((user) => {
+                        {Data.map((report) => {
                             return (
-                                <TableBody key={user._id}>
+                                <TableBody key={report._id}>
                                     <TableRow>
                                         <TableCell align="center" sx={{ width: "150px" }}>
-                                            {user.EnquiryId}
+                                            {report.createdAt.split('T')[0]}
                                         </TableCell>
-                                        <TableCell align="center">{user.Name}</TableCell>
-                                        <TableCell align="center">{user.Email}</TableCell>
+                                        <TableCell align="center">{report.ReportName}</TableCell>
+                                        <TableCell align="center">{report.Report.split('/')[3]}</TableCell>
                                         <TableCell align="center">
-                                            <VisibilityIcon className="ViewIcon" onClick={() => handleView(user)} />
+                                            <VisibilityIcon className="ViewIcon" onClick={() => handleView(report)} />
                                         </TableCell>
                                         <TableCell align="center">
                                             <EditIcon
                                                 className="EditIcon"
-                                                onClick={() => handleEdit(user)}
+                                                onClick={() => handleEdit(report)}
                                             />
                                         </TableCell>
                                         <TableCell align="center">
                                             <DeleteIcon
                                                 className="DeleteIcon"
-                                                onClick={() => handleDelete(user.EnquiryId)}
+                                                onClick={() => handleDelete(report._id)}
                                             />
                                         </TableCell>
                                     </TableRow>

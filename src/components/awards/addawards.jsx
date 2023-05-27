@@ -7,6 +7,7 @@ import Header from '../header/header';
 import { useNavigate } from 'react-router-dom';
 
 export default function AddAwards(params) {
+
     const navigate = useNavigate();
     const [content, setcontent] = useState('');
     const [data, setdata] = useState({
@@ -21,7 +22,6 @@ export default function AddAwards(params) {
         setdata({ ...data, [name]: value });
     };
 
-    console.log(data, 'dattatatat')
     const handleClickfun = async () => {
         await axios
             .post(
@@ -32,7 +32,7 @@ export default function AddAwards(params) {
                 const { message } = res.data;
                 alert(message);
                 setdata({
-                    AwardsId: 'autogeneted',
+                    AwardsId: '',
                     AwardsName: '',
                     AwardsDescription: '',
                     AwardsPic: ''
@@ -46,7 +46,7 @@ export default function AddAwards(params) {
     }, [content]);
 
 
-    console.log(content, 'content')
+    console.log(data, "award data")
 
 
     return (
@@ -146,18 +146,25 @@ export default function AddAwards(params) {
                         <Typography variant='h6' sx={{ padding: '15px', color: '#4F5256' }}>
                             Upload Awards Certificate
                         </Typography>
-                        <TextField
+                        <input
+                            type={"file"}
+                            step="any"
+                            name="AwardsPic"
+                            onChange={(e) =>
+                                setcontent(
+                                    `https://avinya01.s3.ap-south-1.amazonaws.com/${e.target.files[0].name}`)
+                            }
+                        />
+                        {/* <TextField
                             type="file"
                             sx={{ width: "75%" }}
                             placeholder="Announcement For "
                             name="AwardsPic"
                             onChange={(e) =>
                                 setcontent(
-                                    'https://avinya01.s3.ap-south-1.amazonaws.com/' +
-                                    e.target.files[0].name
-                                )
+                                    `https://avinya01.s3.ap-south-1.amazonaws.com/${e.target.files[0].name}`)
                             }
-                        ></TextField>
+                        ></TextField> */}
                     </FormControl>
 
                     <br />
